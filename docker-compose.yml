@@ -1,0 +1,37 @@
+version: '3.5'
+
+services:
+
+   google-suite-checker:
+     build:
+       context: .
+       dockerfile: Dockerfile
+     container_name: google-suite-checker
+     env_file:
+       - .env.docker
+     working_dir: /code
+     volumes:
+       - .:/code
+     networks:
+       - google-suite-checker-network
+     ports:
+       - 8081:80
+       - 9081:9000
+
+   google-suite-checker-db:
+     image: mysql:5.7
+     container_name: google-suite-checker-db
+     volumes:
+       - ./data:/var/lib/mysql
+     restart: always
+     environment:
+       - MYSQL_ROOT_PASSWORD=password
+       - MYSQL_DATABASE=application
+     networks:
+       - google-suite-checker-network
+     ports:
+       - 3381:3306
+
+networks:
+   google-suite-checker-network:
+     name: google-suite-checker-network
