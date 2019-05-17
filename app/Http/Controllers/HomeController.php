@@ -12,7 +12,8 @@ class HomeController extends Controller
         $params = [];
         if( $request->has('q') ) {
             $params['url'] = $url = $request->input('q');
-            $params['mx_records'] = DNS::get_mx_records( $url );
+            $params['domain'] = DNS::get_domain( $url );
+            $params['mx_records'] = DNS::get_mx_records( $params['domain'] );
             $occurrences = 0;
             foreach( $params['mx_records'] as $key => $value ) {
                 $params['mx_records'][ $key ] = str_replace( "googlemail.", "<strong>googlemail</strong>.", $params['mx_records'][ $key ], $i );
@@ -21,7 +22,6 @@ class HomeController extends Controller
                 $occurrences += $i;
             }
             $params['is_google'] = $occurrences > 0 ? true : false;
-            $params['domain'] = $url;
         }
         return view('home', $params);
     }
