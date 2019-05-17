@@ -26,3 +26,4 @@ public/js/app.js
 public/css/app.css
 yarn.lock
 package.lock
+composer.lock
